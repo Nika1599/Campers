@@ -1,61 +1,46 @@
 import { useSelector, useDispatch } from "react-redux";
 import { setFilters } from "../../redux/campers/filterSlice";
+import fetchCampers from "../../redux/campers/operations.js";
 
 const Filters = () => {
-  const filters = useSelector((state) => state.filters); // Забираємо фільтри з Redux
+  const filters = useSelector((state) => state.filters);
   const dispatch = useDispatch();
 
   const handleFilterChange = (filterName, value) => {
-    // Якщо фільтр вже активований, скидаємо його значення (деактивуємо)
     const newValue = filters[filterName] === value ? null : value;
     dispatch(setFilters({ name: filterName, value: newValue }));
   };
 
+  const handleSearch = () => {
+    dispatch(fetchCampers(filters));
+  };
+
   return (
     <div>
-      {/* Локація */}
-      <input
-        type="text"
-        name="location"
-        placeholder="Location"
-        onChange={(e) =>
-          dispatch(setFilters({ name: "location", value: e.target.value }))
-        }
-      />
-
+      <label>
+        Location
+        <input
+          type="text"
+          name="location"
+          placeholder="Kyiv, Ukraine"
+          value={filters.location}
+          onChange={(e) =>
+            dispatch(setFilters({ name: "location", value: e.target.value }))
+          }
+        />
+      </label>
+      <p>Filters</p>
       <div className="filter-group">
-        {/* Тип кузова */}
+        <h3>Vehicle type</h3>
         <button
           className="filter-btn"
-          onClick={() => handleFilterChange("vehicleType", "van")}
-        >
-          Van
-        </button>
-        <button
-          className="filter-btn"
-          onClick={() => handleFilterChange("vehicleType", "fully_integrated")}
-        >
-          Fully Integrated
-        </button>
-        <button
-          className="filter-btn"
-          onClick={() => handleFilterChange("vehicleType", "alcove")}
-        >
-          Alcove
-        </button>
-      </div>
-
-      <div className="filter-group">
-        {/* Обладнання */}
-        <button
-          className="filter-btn"
-          onClick={() => handleFilterChange("airConditioning", "true")}
+          onClick={() => handleFilterChange("AC", "true")}
         >
           AC
         </button>
         <button
           className="filter-btn"
-          onClick={() => handleFilterChange("automatic", "true")}
+          onClick={() => handleFilterChange("transmission", "automatic")}
         >
           Automatic
         </button>
@@ -67,7 +52,7 @@ const Filters = () => {
         </button>
         <button
           className="filter-btn"
-          onClick={() => handleFilterChange("tv", "true")}
+          onClick={() => handleFilterChange("TV", "true")}
         >
           TV
         </button>
@@ -78,7 +63,31 @@ const Filters = () => {
           Bathroom
         </button>
       </div>
+      <div className="filter-group">
+        <h3>Vehicle type</h3>
+        <button
+          className="filter-btn"
+          onClick={() => handleFilterChange("form", "panelTruck")}
+        >
+          Van
+        </button>
+        <button
+          className="filter-btn"
+          onClick={() => handleFilterChange("form", "fullyIntegrated")}
+        >
+          Fully Integrated
+        </button>
+        <button
+          className="filter-btn"
+          onClick={() => handleFilterChange("form", "alcove")}
+        >
+          Alcove
+        </button>
+      </div>
+
+      <button onClick={handleSearch}>Search</button>
     </div>
   );
 };
+
 export default Filters;

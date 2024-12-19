@@ -4,27 +4,29 @@ const filtersSlice = createSlice({
   name: "filters",
   initialState: {
     location: "",
-    vehicleType: "",
-    airConditioning: false,
-    automatic: false,
-    kitchen: false,
-    tv: false,
-    equipment: "",
-    bathroom: false,
+    form: "",
+    transmission: "",
+    AC: null,
+    kitchen: null,
+    TV: null,
+    bathroom: null,
   },
   reducers: {
     setFilters: (state, action) => {
       const { name, value } = action.payload;
-      state[name] = value;
+      if (state[name] === value) {
+        state[name] = null;
+      } else {
+        state[name] = value;
+      }
     },
     resetFilters: (state) => {
       state.location = "";
-      state.vehicleType = "";
-      state.airConditioning = false;
-      state.automatic = false;
+      state.form = "";
+      state.transmission = "";
+      state.AC = false;
       state.kitchen = false;
-      state.tv = false;
-      state.equipment = "";
+      state.TV = false;
       state.bathroom = false;
     },
   },

@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { clearCampers } from "../../redux/campers/campersSlice";
-import Filter from "../../components/Filters/Filter";
 import fetchCampers from "../../redux/campers/operations";
+import Filter from "../../components/Filters/Filter";
 
 const Catalog = () => {
   const dispatch = useDispatch();
@@ -22,13 +22,16 @@ const Catalog = () => {
       <Filter />
       <div>
         {items.length > 0 ? (
-          items.map((camper) => (
-            <div key={camper.id}>
-              <h3>{camper.name}</h3>
-              <p>{camper.description}</p>
-              <p>Price: {camper.price}</p>
-            </div>
-          ))
+          items.map((camper) => {
+            const fixedPrice = camper.price.toFixed(2);
+            return (
+              <div key={camper.id}>
+                <h3>{camper.name}</h3>
+                <p>{camper.description}</p>
+                <p>Price: {fixedPrice}</p>
+              </div>
+            );
+          })
         ) : (
           <p>No campers found.</p>
         )}
