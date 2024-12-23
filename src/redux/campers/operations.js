@@ -6,19 +6,34 @@ const fetchCampers = createAsyncThunk(
   async (filters, thunkAPI) => {
     try {
       const cleanedFilters = { ...filters };
-      Object.keys(cleanedFilters).forEach((key) =>
-        cleanedFilters[key] === "" ||
-        cleanedFilters[key] === null ||
-        cleanedFilters[key] === false
-          ? delete cleanedFilters[key]
-          : null
-      );
 
-      const queryParams = new URLSearchParams(cleanedFilters).toString();
-      console.log("Query params:", queryParams);
+      // Очищення фільтрів для масивів та пустих значень
+      Object.keys(cleanedFilters).forEach((key) => {
+        if (
+          cleanedFilters[key] === "" ||
+          cleanedFilters[key] === null ||
+          (Array.isArray(cleanedFilters[key]) &&
+            cleanedFilters[key].length === 0)
+        ) {
+          delete cleanedFilters[key];
+        }
+      });
+
+      // Формування query params
+      const queryParams = new URLSearchParams();
+      Object.keys(cleanedFilters).forEach((key) => {
+        if (Array.isArray(cleanedFilters[key])) {
+          queryParams.set(key, cleanedFilters[key].join(",")); // Масиви у рядок
+        } else {
+          queryParams.set(key, cleanedFilters[key]);
+        }
+      });
+
+      const queryString = queryParams.toString();
+      console.log("Query params:", queryString);
 
       const response = await axios.get(
-        `https://66b1f8e71ca8ad33d4f5f63e.mockapi.io/campers?${queryParams}`
+        `https://66b1f8e71ca8ad33d4f5f63e.mockapi.io/campers?${queryString}`
       );
       return response.data.items;
     } catch (error) {

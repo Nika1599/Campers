@@ -1,41 +1,33 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const getSelectedCampers = () => {
-  const savedCampers = localStorage.getItem("selectedCampers");
-  return savedCampers ? JSON.parse(savedCampers) : [];
-};
-
-const saveSelectedCampers = (campers) => {
-  localStorage.setItem("selectedCampers", JSON.stringify(campers));
+const loadFavouritesFromStorage = () => {
+  try {
+    const storedFavourites = localStorage.getItem("favourites");
+    return storedFavourites ? JSON.parse(storedFavourites) : [];
+  } catch (error) {
+    console.error("Error loading favourites from storage:", error);
+    return [];
+  }
 };
 
 const favoritesSlice = createSlice({
   name: "favorites",
   initialState: {
-    selectedCampers: getSelectedCampers(),
+    items: loadFavouritesFromStorage(),
   },
   reducers: {
     addToFavorites: (state, action) => {
-      const camper = action.payload;
-      if (!state.selectedCampers.some((item) => item.id === camper.id)) {
-        state.selectedCampers.push(camper);
-        saveSelectedCampers(state.selectedCampers);
+      if (!state.items.some((item) => item.id === action.payload.id)) {
+        state.items.push(action.payload);
+        localStorage.setItem("favourites", JSON.stringify(state.items));
       }
     },
     removeFromFavorites: (state, action) => {
-      const camperId = action.payload;
-      state.selectedCampers = state.selectedCampers.filter(
-        (camper) => camper.id !== camperId
-      );
-      saveSelectedCampers(state.selectedCampers);
-    },
-    resetFavorites: (state) => {
-      state.selectedCampers = [];
-      saveSelectedCampers(state.selectedCampers);
+      state.items = state.items.filter((item) => item.id !== action.payload.id);
+      localStorage.setItem("favorites", JSON.stringify(state.items));
     },
   },
 });
 
-export const { addToFavorites, removeFromFavorites, resetFavorites } =
-  favoritesSlice.actions;
+export const { addToFavorites, removeFromFavorites } = favoritesSlice.actions;
 export const favoritesReducer = favoritesSlice.reducer;
