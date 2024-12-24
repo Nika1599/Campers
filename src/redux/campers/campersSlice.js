@@ -16,10 +16,17 @@ const campersSlice = createSlice({
     items: [],
     isLoading: false,
     error: null,
+    page: 1,
+    limit: 4,
+    totalItems: 0,
   },
   reducers: {
     clearCampers: (state) => {
       state.items = [];
+      state.page = 1;
+    },
+    countPage: (state) => {
+      state.page += 1;
     },
   },
   extraReducers: (builder) => {
@@ -27,8 +34,14 @@ const campersSlice = createSlice({
       .addCase(fetchCampers.pending, handlePending)
       .addCase(fetchCampers.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.error = null;
-        state.items = action.payload;
+
+        // Додайте нові картки до існуючих
+        if (Array.isArray(action.payload.items)) {
+          state.items = [...state.items, ...action.payload.items];
+        }
+
+        // Оновіть total
+        state.totalItems = action.payload.total || 0; // Оновили з total на totalItems
       })
       .addCase(fetchCampers.rejected, handleRejected);
   },

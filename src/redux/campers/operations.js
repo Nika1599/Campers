@@ -3,7 +3,7 @@ import axios from "axios";
 
 const fetchCampers = createAsyncThunk(
   "campers/fetchAll",
-  async (filters, thunkAPI) => {
+  async ({ filters, page, limit }, thunkAPI) => {
     try {
       const cleanedFilters = { ...filters };
 
@@ -28,14 +28,18 @@ const fetchCampers = createAsyncThunk(
           queryParams.set(key, cleanedFilters[key]);
         }
       });
-
+      queryParams.set("page", page);
+      queryParams.set("limit", limit);
       const queryString = queryParams.toString();
       console.log("Query params:", queryString);
 
       const response = await axios.get(
         `https://66b1f8e71ca8ad33d4f5f63e.mockapi.io/campers?${queryString}`
       );
-      return response.data.items;
+      return {
+        items: response.data.items,
+        total: response.data.total, // Змінили totalItems на total
+      };
     } catch (error) {
       console.error("Error fetching campers:", error);
       return thunkAPI.rejectWithValue(
