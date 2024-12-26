@@ -31,7 +31,6 @@ const fetchCampers = createAsyncThunk(
       queryParams.set("page", page);
       queryParams.set("limit", limit);
       const queryString = queryParams.toString();
-      console.log("Query params:", queryString);
 
       const response = await axios.get(
         `https://66b1f8e71ca8ad33d4f5f63e.mockapi.io/campers?${queryString}`
@@ -45,6 +44,20 @@ const fetchCampers = createAsyncThunk(
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || error.message
       );
+    }
+  }
+);
+
+export const fetchCamperById = createAsyncThunk(
+  "campers/fetchOne",
+  async (id, thunkAPI) => {
+    try {
+      const response = await axios.get(
+        `https://66b1f8e71ca8ad33d4f5f63e.mockapi.io/campers/${id}`
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );

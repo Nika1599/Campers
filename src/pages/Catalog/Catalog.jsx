@@ -33,13 +33,11 @@ const Catalog = () => {
   const handleLoadMore = () => {
     // Перевірка на кінець колекції
     if (items.length >= totalItems) {
-      iziToast.info({
-        title: "End of Collection",
-        message: "You have reached the end of the collection!",
+      iziToast.error({
         position: "topRight",
-        timeout: 3000,
+        message: "We're sorry, there are no more posts to load.",
       });
-      return;
+      return; // Якщо кінець, не завантажуємо більше
     }
 
     // Завантаження наступної сторінки
@@ -78,7 +76,7 @@ const Catalog = () => {
       <Filter />
       <div>
         {items.length > 0 ? (
-          items.map((camper) => {
+          items.map((camper, index) => {
             const isFavorite = favorites.some((item) => item.id === camper.id);
             const displayedCharacteristics =
               getFirstFourCharacteristics(camper);
@@ -89,11 +87,11 @@ const Catalog = () => {
                 dispatch(addToFavorites(camper));
               }
             };
-
+            const uniqueKey = `${camper.id}-${index}`;
             const fixedPrice = parseFloat(camper.price).toFixed(2);
 
             return (
-              <div key={camper.id}>
+              <div key={uniqueKey}>
                 <img src={camper.gallery[0].thumb} alt={camper.name} />
                 <h3>{camper.name}</h3>
                 <p> €{fixedPrice}</p>
@@ -123,11 +121,12 @@ const Catalog = () => {
           <p>No campers found.</p>
         )}
       </div>
-      {items.length < totalItems ? (
+      {items.length < totalItems && (
         <button onClick={handleLoadMore}>Load More</button>
-      ) : (
-        <p ref={bottomRef}>End of Collection</p>
       )}
+
+      {/* Якщо немає більше елементів */}
+      {items.length >= totalItems && <p ref={bottomRef}>End of Collection</p>}
     </div>
   );
 };

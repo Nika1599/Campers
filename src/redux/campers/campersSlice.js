@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import fetchCampers from "./operations";
+import { fetchCamperById } from "./operations";
 
 const handlePending = (state) => {
   state.isLoading = true;
@@ -14,6 +15,7 @@ const campersSlice = createSlice({
   name: "campers",
   initialState: {
     items: [],
+    selectedCamper: null,
     isLoading: false,
     error: null,
     page: 1,
@@ -40,10 +42,29 @@ const campersSlice = createSlice({
           state.items = [...state.items, ...action.payload.items];
         }
 
-        // Оновіть total
-        state.totalItems = action.payload.total || 0; // Оновили з total на totalItems
+        // Оновіть totalItems, якщо це значення є в payload
+        if (action.payload.total !== undefined) {
+          state.totalItems = action.payload.total;
+        }
+
+        // Якщо total не приходить, то ви можете встановити значення вручну
+        if (!state.totalItems) {
+          state.totalItems = 0;
+        }
       })
-      .addCase(fetchCampers.rejected, handleRejected);
+      .addCase(fetchCampers.rejected, handleRejected)
+      .addCase(fetchCamperById.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchCamperById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.selectedCamper = action.payload;
+      })
+      .addCase(fetchCamperById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
   },
 });
 
