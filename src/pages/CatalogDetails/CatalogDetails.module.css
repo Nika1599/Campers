@@ -26,3 +26,31 @@
 .image-item img:active {
   transform: scale(1.05); /* Зменшення зображення при натисканні */
 }
+
+.tabsContainer {
+  display: flex; /* Вирівнює вкладки по горизонталі */
+  gap: 24px; /* Відстань між вкладками */
+  margin-left: 64px;
+}
+.tab {
+  position: relative; /* Важливо для розміщення лінії */
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 120%;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  background: transparent; /* Прозорий фон */
+}
+
+.tabUnderline {
+  position: absolute;
+  bottom: -24px; /* Лінія буде знаходитися під вкладкою */
+  left: 0;
+  width: 85px; /* Ширина червоної лінії */
+  height: 6px;
+}
+
+.activeTab {
+  color: #e44848; /* Червоний колір для активної вкладки */
+}

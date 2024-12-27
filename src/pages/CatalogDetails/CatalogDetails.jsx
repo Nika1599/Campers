@@ -1,5 +1,5 @@
 import { useNavigate, useLocation, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { fetchCamperById } from "../../redux/campers/operations";
@@ -11,6 +11,7 @@ const CamperDetails = () => {
   const location = useLocation();
   const { id } = useParams();
   const dispatch = useDispatch();
+  const [activeTab, setActiveTab] = useState("features");
 
   const { selectedCamper, isLoading, error } = useSelector(
     (state) => state.campers
@@ -28,6 +29,11 @@ const CamperDetails = () => {
       navigate("/catalog");
     }
   };
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
   const images = selectedCamper?.gallery.map((image) => ({
     thumbnail: image.thumb,
   }));
@@ -46,10 +52,47 @@ const CamperDetails = () => {
           </p>
           <p> {selectedCamper.location}</p>
           <p> €{parseFloat(selectedCamper.price).toFixed(2)}</p>
-          <ImageGallery items={images} className={css.imageGallery} />;
+          <ImageGallery items={images} className={css.imageGallery} />
           <p>{selectedCamper.description}</p>
-          <p>Features</p>
-          <p>Reviews</p>
+          <div className={css.tabsContainer}>
+            {" "}
+            {/* Flex-контейнер для вкладок */}
+            <div
+              className={css.tab}
+              onClick={() => handleTabChange("features")}
+            >
+              Features
+              {activeTab === "features" && (
+                <svg
+                  className={css.tabUnderline}
+                  width="100"
+                  height="6"
+                  viewBox="0 0 100 6"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M0 3H100" stroke="#DADDE1" />
+                  <path d="M0 3H85" stroke="#E44848" strokeWidth="5" />
+                </svg>
+              )}
+            </div>
+            <div className={css.tab} onClick={() => handleTabChange("reviews")}>
+              Reviews
+              {activeTab === "reviews" && (
+                <svg
+                  className={css.tabUnderline}
+                  width="100"
+                  height="6"
+                  viewBox="0 0 100 6"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M0 3H100" stroke="#DADDE1" />
+                  <path d="M0 3H85" stroke="#E44848" strokeWidth="5" />
+                </svg>
+              )}
+            </div>
+          </div>
         </div>
       )}
       {isLoading && <p>Loading camper details...</p>}
