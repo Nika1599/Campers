@@ -5,6 +5,7 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 import { fetchCamperById } from "../../redux/campers/operations";
 import ImageGallery from "react-image-gallery";
 import css from "./CatalogDetails.module.css";
+import { BookForm } from "../../components/BookForm/BookForm";
 
 const CamperDetails = () => {
   const navigate = useNavigate();
@@ -171,6 +172,7 @@ const CamperDetails = () => {
       {error !== null && (
         <p style={{ color: "red" }}>{error}. Please, try again later.</p>
       )}
+      <BookForm />
     </div>
   );
 };
