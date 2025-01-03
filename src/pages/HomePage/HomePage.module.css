@@ -1,0 +1,44 @@
+.mainTitle {
+  max-width: 571px;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 67%;
+  margin-bottom: 16px;
+  color: #f7f7f7;
+}
+
+.mainText {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 133%;
+  color: #f7f7f7;
+  margin-bottom: 40px;
+  width: 550px;
+}
+
+.viewNowButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 200px;
+  border: none;
+  padding: 16px 60px;
+  min-width: 173px;
+  height: 56px;
+  background-color: #e44848;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+.heroSection {
+  padding-top: 260px;
+  padding-bottom: 260px;
+  padding-left: 64px;
+  background-image: url("../../../image/Camper.jpg");
+  background-size: cover;
+  width: 1440px;
+  height: 696px;
+}

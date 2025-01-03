@@ -7,12 +7,12 @@ const Catalog = lazy(() => import("../pages/Catalog/Catalog"));
 const CatalogDetails = lazy(() =>
   import("../pages/CatalogDetails/CatalogDetails")
 );
-const Navigation = lazy(() => import("../components/Navigation/Navigation"));
+const AppBar = lazy(() => import("./AppBar/AppBar"));
 
 function App() {
   return (
-    <>
-      <Navigation />
+    <div className="container">
+      <AppBar />
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -20,7 +20,7 @@ function App() {
           <Route path="/catalog/:id" element={<CatalogDetails />} />
         </Routes>
       </Suspense>
-    </>
+    </div>
   );
 }
 

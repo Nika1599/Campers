@@ -1,0 +1,28 @@
+.pageNav {
+  display: flex;
+}
+
+.logo {
+  padding-left: 64px;
+  margin-right: 450px;
+  padding-top: 28px;
+  padding-bottom: 28px;
+}
+.menu {
+  display: flex;
+  gap: 32px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.menuLink {
+  display: block;
+}
+
+.active {
+  color: #d84343;
+}
+
+.inactive {
+  color: #101828;
+}
